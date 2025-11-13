@@ -42,7 +42,7 @@ For these exercises, a starter project is available for you to use. Use the foll
 
 1. Paste the following URL into a new browser window:
    
-     `https://github.com/MicrosoftLearning/AZ-2005-Develop-AI-agents-OpenAI-Semantic-Kernel-SDK/blob/master/Allfiles/Labs/02/Lab-02-Starter.zip`
+     `https://github.com/MicrosoftLearning/AZ-2005-Develop-AI-agents-OpenAI-Semantic-Kernel-SDK/blob/master/Allfiles/Labs/02/Labs-02-Starter.zip`
 
 1. Download the zip file by clicking the <kbd>...</kbd> button located on the upper right side of the page, or press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd>.
 

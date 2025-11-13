@@ -14,23 +14,29 @@ This exercise takes approximately **30** minutes.
 
 1. Navigate to [https://portal.azure.com](https://portal.azure.com).
 
-1. Create a new Azure OpenAI resource using the default settings.
+1. Create a new **Azure OpenAI** resource using the default settings.
 
 1. After the resource is created, select **Go to resource**.
 
 1. On the **Overview** page, select **Go to Azure Foundry portal**.
 
-1. Select **Create New Deployment** then **from base models**.
+    The Azure AI Foundry portal should open in a new tab.
 
-1. Search for **gpt-4o** on the model list, then select and confirm it.
+1. In the left navigation pane, select **Deployments**.
 
-1. Enter a name for your deployment and leave the default options.
+1. Select **Deploy model** and then select **Deploy base model**.
 
-1. When the deployment completes, navigate back to your Azure OpenAI resource in the Azure Portal.
+1. Search for **gpt-4o** on the model list, select it then choose **Confirm**.
 
-1. Under **Resource Management**, go to **Keys and Endpoint**.
+    A dialog should appear to configure the deployment to your Azure OpenAI resource.
 
-    You'll use the data here in the next task to build your kernel. Remember to keep your keys private and secure!
+1. Review the settings and select **Deploy**.
+
+    When the deployment is complete, the deployment details page appears.
+
+1. Under **Endpoint**, observe the **Target URI** and the **Key**.
+
+    You'll use the values here in the next task to build your kernel. Remember to keep your keys private and secure!
 
 ## Prepare the application configuration
 
@@ -102,23 +108,25 @@ This exercise takes approximately **30** minutes.
 
     The file is opened in a code editor.
 
-1. Update the values with your Azure OpenAI Services model id, endpoint, and API key.
+1. Update the values from your Azure OpenAI model deployment:
 
     **Python**
     ```python
-    MODEL_DEPLOYMENT=""
-    BASE_URL=""
+    MODEL_ENDPOINT=""
     API_KEY="
+    MODEL_DEPLOYMENT_NAME=""
     ```
 
     **C#**
     ```json
     {
-        "modelName": "",
-        "endpoint": "",
-        "apiKey": ""
+        "openai_endpoint": "",
+        "api_key": "",
+        "model_deployment_name": "",
     }
     ```
+
+> **Note**: If using C#, use the **Azure OpenAI** endpoint URL on the **Home** page of your resource for the `openai_endpoint` value.
 
 1. After you've updated the values, use the **CTRL+S** command to save your changes and then use the **CTRL+Q** command to close the code editor while keeping the cloud shell command line open.
 
@@ -143,9 +151,9 @@ This exercise takes approximately **30** minutes.
     # Create a kernel builder with Azure OpenAI chat completion
     kernel = Kernel()
     chat_completion = AzureChatCompletion(
-        deployment_name=deployment_name,
+        deployment_name=model_name,
         api_key=api_key,
-        base_url=base_url,
+        base_url=endpoint,
     )
     kernel.add_service(chat_completion)
     ```
@@ -153,11 +161,11 @@ This exercise takes approximately **30** minutes.
      ```c#
     // Create a kernel builder with Azure OpenAI chat completion
     var builder = Kernel.CreateBuilder();
-    builder.AddAzureOpenAIChatCompletion(modelId, endpoint, apiKey);
+    builder.AddAzureOpenAIChatCompletion(modelName, endpoint, apiKey);
     var kernel = builder.Build();
     ```
 
-1. Near the bottom of the file, find the comment **Create a kernel function to build the stage environment**, and add the following code to create a mock plugin functin that will build the staging environment:
+1. In the **DevopsPlugin** class near the bottom of the file, find the comment **Create a kernel function to build the stage environment**, and add the following code to create a mock plugin functin that will build the staging environment:
 
     **Python**
     ```python
@@ -179,7 +187,7 @@ This exercise takes approximately **30** minutes.
 
     The `KernelFunction` decorator declares your native function. You use a descriptive name for the function so that the AI can call it correctly. 
 
-1. Navigate to the comment **Import plugins to the kernel** and add the following code:
+1. In the **main** method, navigate to the comment **Import plugins to the kernel** and add the following code to use the plugin class you completed:
 
     **Python**
     ```python
@@ -192,7 +200,6 @@ This exercise takes approximately **30** minutes.
     // Import plugins to the kernel
     kernel.ImportPluginFromType<DevopsPlugin>();
     ```
-
 
 1. Under the comment **Create prompt execution settings**, add the following code to automatically invoke the function:
 
@@ -334,7 +341,9 @@ This exercise takes approximately **30** minutes.
     Assistant: The stage environment cannot be deployed because the earlier stage build failed due to unit test errors. Deploying a faulty build to stage may cause eventual issues and compromise the environment.
     ```
 
-    Your response from the LLM may vary, but still prevent you from deploying the stage site.
+    Your response from the LLM may vary, but still prevent you from deploying the stage site. 
+    
+1. Press <kbd>Enter</kbd> to end the program.
 
 ## Create a handlebars prompt
 
@@ -453,6 +462,8 @@ This exercise takes approximately **30** minutes.
     ```output
     Assistant: The new branch `feature-login` has been successfully created from `main`.
     ```
+
+1. Press <kbd>Enter</kbd> to end the program.
 
 ## Require user consent for actions
 
@@ -573,6 +584,8 @@ This exercise takes approximately **30** minutes.
     User: N
     Assistant: I'm sorry, but I am unable to proceed with the deployment.
     ```
+
+1. Press <kbd>Enter</kbd> to end the program.
 
 ### Review
 
