@@ -517,9 +517,11 @@ This exercise takes approximately **30** minutes.
 
     This code uses the `FunctionInvocationContext` object to determine which plugin and function were invoked.
 
-1. Add the following logic to request the user's permission to book the flight:
+1. Add the following logic to request the user's permission to proceed with the operation:
 
-     **Python**
+    Be sure to keep the correct indentation level.
+
+    **Python**
     ```python
     # Request user approval
     print("System Message: The assistant requires approval to complete this operation. Do you approve (Y/N)")
